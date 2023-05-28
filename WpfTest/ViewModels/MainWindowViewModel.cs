@@ -16,14 +16,20 @@ public class MainWindowViewModel : BindableBase
         GetEntities();
     }
 
+    public bool IsLoading { get; set; }
+    
     public ObservableCollection<Entity> Entities { get; set; } = new ();
 
     private async Task GetEntities()
     {
+        IsLoading = true;
+        
         var entities = await _repository.Get();
         foreach (var entity in entities)
         {
             Entities.Add(entity);
         }
+
+        IsLoading = false;
     }
 }

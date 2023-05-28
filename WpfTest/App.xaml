@@ -9,9 +9,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
             <Geometry x:Key="IconGeometry">M1 4L3.70008 7L10 1</Geometry>
-
         </ResourceDictionary>
     </Application.Resources>
 
