@@ -1,12 +1,70 @@
-﻿<Window x:Class="WpfTest.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfTest"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+﻿<Window
+    Height="450"
+    Title="MainWindow"
+    Width="800"
+    mc:Ignorable="d"
+    x:Class="WpfTest.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WpfTest"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:WpfTest.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <ListBox ItemsSource="{Binding Entities, UpdateSourceTrigger=PropertyChanged}" MaxHeight="300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl>
+                        <StackPanel Orientation="Vertical" x:Name="Panel">
+                            <Path
+                                Data="{StaticResource IconGeometry}"
+                                Stroke="Black"
+                                Visibility="{Binding IsCompany, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                            <TextBlock x:Name="TextBlock">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat=" {0}, {1}, {2} ">
+                                        <Binding Path="Name" />
+                                        <Binding Path="Address" />
+                                        <Binding Path="Email" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                    </ContentControl>
+                    <DataTemplate.Triggers>
+
+                        <DataTrigger Binding="{Binding Name}" Value="">
+                            <Setter Property="Background" TargetName="Panel" Value="Red" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Address}" Value="">
+                            <Setter Property="Background" TargetName="Panel" Value="Red" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Email}" Value="">
+                            <Setter Property="Background" TargetName="Panel" Value="Red" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsCompany}" Value="False">
+                            <Setter Property="Text" TargetName="TextBlock">
+                                <Setter.Value>
+                                    <MultiBinding StringFormat=" {0}&#x0d;&#x0a; {1}&#x0d;&#x0a; {2}">
+                                        <Binding Path="Name" StringFormat="Name: {0}" />
+                                        <Binding Path="Address" StringFormat="Address: {0}" />
+                                        <Binding Path="Email" StringFormat="Email: {0}" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
